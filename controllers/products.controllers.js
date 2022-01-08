@@ -27,11 +27,12 @@ const searchAll = async (_req, res) => {
   let products;
   try {
     products = await getAll();
+    // console.log(products);
   } catch (error) {
     return res.status(status.UNPROCESSABLE_ENTITY).json(ERROR_FORMAT);
   }
   return products
-    ? res.status(status.OK).json({ products: searchAll })
+    ? res.status(status.OK).json(products)
     : res.status(status.UNPROCESSABLE_ENTITY).json(NOT_FOUND_ERROR);
 };
 

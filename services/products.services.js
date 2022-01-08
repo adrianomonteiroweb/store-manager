@@ -15,7 +15,7 @@ const searchByName = async (name) => {
 const getAll = async () => {
   const get = await getAllProducts();
 
-  return get || null;
+  return get;
 };
 
 module.exports = {

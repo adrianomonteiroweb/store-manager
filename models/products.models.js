@@ -2,10 +2,10 @@ const connect = require('./connection');
 
 const create = async (name, quantity) => {
   try {
-    const conn = await connect()
-      .then((db) => db.collection('products').insertOne({ name, quantity }));
+    const db = await connect();
+    const newProduct = await db.collection('products').insertOne({ name, quantity });
 
-    return conn ? conn.ops.pop() : null;
+    return newProduct ? newProduct.ops.pop() : null;
   } catch (error) {
     return error.message;
   }
@@ -13,8 +13,8 @@ const create = async (name, quantity) => {
 
 const getProductByName = async (name) => {
   try {
-    const conn = await connect();
-    const product = await conn.collection('products').find({ name }).toArray();
+    const db = await connect();
+    const product = await db.collection('products').find({ name }).toArray();
   
     return product || null;
   } catch (error) {
@@ -24,10 +24,10 @@ const getProductByName = async (name) => {
 
 const getAllProducts = async () => {
   try {
-    const products = await connect()
-    .then((db) => db.collection('products').find({}).toArray());
-    
-    return products || null;
+    const db = await connect();
+    const products = await db.collection('products').find({}).toArray();
+    // console.log(products);
+    return products;
   } catch (err) {
     return err.message;
   }
