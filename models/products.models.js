@@ -22,7 +22,19 @@ const getProductByName = async (name) => {
   }
 };
 
-module.exports = ({
-  create: (name, quantity) => create(name, quantity),
+const getAllProducts = async () => {
+  try {
+    const products = await connect()
+    .then((db) => db.collection('products').find({}).toArray());
+    
+    return products || null;
+  } catch (err) {
+    return err.message;
+  }
+};
+
+module.exports = {
+  create,
   getProductByName,
-});
+  getAllProducts,
+};
