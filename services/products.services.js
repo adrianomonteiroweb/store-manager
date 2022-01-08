@@ -1,15 +1,17 @@
-const { create } = require('../models/products.models');
+const { create, getProduct } = require('../models/products.models');
 
 const createdProduct = async (name, quantity) => {
-  const newProductId = await create(name, quantity);
+  const insert = await create(name, quantity);
 
-  const newProduct = {
-    id: newProductId,
-    name,
-    quantity,
-  };
-
-  return newProduct;
+  return insert || null;
 };
 
-module.exports = { createdProduct };
+const searchByName = async (name) => {
+  const product = await getProduct(name);
+  return product;
+};
+
+module.exports = {
+  createdProduct,
+  searchByName,
+};

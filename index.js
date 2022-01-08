@@ -1,8 +1,5 @@
 const express = require('express');
 
-const { insertProduct } = require('./controllers/products.controllers');
-const errorMiddleware = require('./middlewares/errorMiddleware');
-
 const app = express();
 const PORT = 3000;
 app.use(express.json());
@@ -12,9 +9,10 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-// cadastrar produto
-app.post('/products', insertProduct);
+// routers
+const { products } = require('./routers');
 
-app.use(errorMiddleware);
+// cadastrar produto
+app.use('/products', products);
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

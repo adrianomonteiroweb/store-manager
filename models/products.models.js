@@ -1,10 +1,28 @@
 const connect = require('./connection');
 
 const create = async (name, quantity) => {
-  const conn = await connect();
-  const { insertedId } = await conn.collection('products').insertOne({ name, quantity });
+  try {
+    const conn = await connect()
+      .then((db) => db.collection('products').insertOne({ name, quantity }));
 
-  return insertedId;
+    return conn ? conn.ops.pop() : null;
+  } catch (error) {
+    return error.message;
+  }
 };
 
-module.exports = { create };
+const getProductByName = async (name) => {
+  try {
+    const conn = await connect();
+    const product = await conn.collection('products').find({ name }).toArray();
+  
+    return product || null;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+module.exports = ({
+  create: (name, quantity) => create(name, quantity),
+  getProductByName,
+});
