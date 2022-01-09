@@ -4,6 +4,7 @@ const {
   getAll,
   getById,
   setProduct,
+  deleteById,
 } = require('../services/products.services');
 
 const NOT_FOUND_ERROR = { message: 'NOT FOUND' };
@@ -67,9 +68,23 @@ const updateProduct = async (req, res) => {
   : res.status(status.NOT_FOUND).json(NOT_FOUND_ERROR);
 };
 
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  let product;
+  try {
+    product = await deleteById(id);
+  } catch (error) {
+    return res.status(status.UNPROCESSABLE_ENTITY).json(ERROR_FORMAT);
+  }
+  return product
+  ? res.status(status.OK).json(product)
+  : res.status(status.UNPROCESSABLE_ENTITY).json(NOT_FOUND_ERROR);
+};
+
 module.exports = {
   insertProduct,
   searchAll,
   searchById,
   updateProduct,
+  deleteProduct,
 };

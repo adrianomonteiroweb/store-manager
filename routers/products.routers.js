@@ -5,6 +5,7 @@ const {
   searchAll,
   searchById,
   updateProduct,
+  deleteProduct,
 } = require('../controllers/products.controllers');
 
 const {
@@ -42,5 +43,11 @@ router.put(
   checkQuantityType,
   updateProduct,
   );
+
+router.delete(
+  '/:id',
+  checkProductById,
+  deleteProduct,
+);
 
 module.exports = router;
