@@ -3,6 +3,7 @@ const {
   getProduct,
   getAllProducts,
   getProductById,
+  updateProductById,
 } = require('../models/products.models');
 
 const createdProduct = async (name, quantity) => {
@@ -29,9 +30,16 @@ const getById = async (id) => {
   return get || null;
 };
 
+const setProduct = async (id, name, quantity) => {
+  const update = await updateProductById(id, name, quantity);
+
+  return update || null;
+};
+
 module.exports = {
   createdProduct,
   searchByName,
   getAll,
   getById,
+  setProduct,
 };

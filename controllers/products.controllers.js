@@ -1,5 +1,10 @@
 const status = require('http-status-codes').StatusCodes;
-const { createdProduct, getAll, getById } = require('../services/products.services');
+const {
+  createdProduct,
+  getAll,
+  getById,
+  setProduct,
+} = require('../services/products.services');
 
 const NOT_FOUND_ERROR = { message: 'NOT FOUND' };
 const ERROR_FORMAT = {
@@ -48,8 +53,23 @@ const searchById = async (req, res) => {
   : res.status(status.UNPROCESSABLE_ENTITY).json(NOT_FOUND_ERROR);
 };
 
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  let product;
+  try {
+    product = await setProduct(id, name, quantity);
+  } catch (err) {
+    return res.status(status.BAD_REQUEST).json({ message: err.message });
+  }
+  return product
+  ? res.status(status.OK).json(product)
+  : res.status(status.NOT_FOUND).json(NOT_FOUND_ERROR);
+};
+
 module.exports = {
   insertProduct,
   searchAll,
   searchById,
+  updateProduct,
 };

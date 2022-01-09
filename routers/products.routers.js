@@ -1,11 +1,18 @@
 const router = require('express').Router();
 
-const { insertProduct, searchAll, searchById } = require('../controllers/products.controllers');
+const {
+  insertProduct,
+  searchAll,
+  searchById,
+  updateProduct,
+} = require('../controllers/products.controllers');
+
 const {
   checkNameLength,
   checkNameAlreadyExists,
   checkProductById,
 } = require('../middlewares/checkProductExistence');
+
 const { checkQuantityType, checkQuantityLength } = require('../middlewares/checkQuantity');
 
 router.get(
@@ -26,6 +33,14 @@ router.post(
   checkQuantityType,
   checkQuantityLength,
   insertProduct,
+  );
+
+router.put(
+  '/:id',
+  checkNameLength,
+  checkQuantityLength,
+  checkQuantityType,
+  updateProduct,
   );
 
 module.exports = router;
