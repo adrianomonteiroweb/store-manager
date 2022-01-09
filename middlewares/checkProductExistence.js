@@ -1,6 +1,6 @@
-const { getProductByName } = require('../models/products.models');
+const { getProductByName, getProductById } = require('../models/products.models');
 
-const NAME_STATUS_ERROR = 422;
+const STATUS_ERROR = 422;
 const ERROR_LENGTH = {
   err: {
     code: 'invalid_data',
@@ -13,11 +13,17 @@ const ERROR_EXISTS = {
     message: 'Product already exists',
   },
 };
+const ERROR_ID = {
+  err: {
+    code: 'invalid_data',
+    message: 'Wrong id format',
+  },
+};
 
 const checkNameLength = async (req, res, next) => {
   const { name } = req.body;
   if (typeof name !== 'string' || name.length < 6) {
-    return res.status(NAME_STATUS_ERROR).json(ERROR_LENGTH);
+    return res.status(STATUS_ERROR).json(ERROR_LENGTH);
   }
   next();
 };
@@ -28,7 +34,16 @@ const checkNameAlreadyExists = async (req, res, next) => {
 
   const exists = search.some((object) => object.name === name);
 
-  if (exists) return res.status(NAME_STATUS_ERROR).json(ERROR_EXISTS);
+  if (exists) return res.status(STATUS_ERROR).json(ERROR_EXISTS);
+
+  next();
+};
+
+const checkProductById = async (req, res, next) => {
+  const { id } = req.params;
+  const productExist = await getProductById(id);
+  
+  if (typeof productExist !== 'object') return res.status(STATUS_ERROR).json(ERROR_ID);
 
   next();
 };
@@ -36,4 +51,5 @@ const checkNameAlreadyExists = async (req, res, next) => {
 module.exports = {
   checkNameLength,
   checkNameAlreadyExists,
+  checkProductById,
 };
