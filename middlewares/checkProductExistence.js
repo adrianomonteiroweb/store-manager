@@ -17,7 +17,7 @@ const ERROR_EXISTS = {
 const checkNameLength = async (req, res, next) => {
   const { name } = req.body;
   if (typeof name !== 'string' || name.length < 6) {
-    res.status(NAME_STATUS_ERROR).json(ERROR_LENGTH);
+    return res.status(NAME_STATUS_ERROR).json(ERROR_LENGTH);
   }
   next();
 };

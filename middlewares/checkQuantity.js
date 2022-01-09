@@ -1,18 +1,36 @@
 const ERROR_STATUS = 422;
-const ERROR_MESSAGE = {
+const ERROR_MESSAGE_LENGTH = {
   err: {
     code: 'invalid_data',
     message: '"quantity" must be larger than or equal to 1',
   },
 };
+const ERROR_MESSAGE_TYPE = {
+  err: {
+    code: 'invalid_data',
+    message: '"quantity" must be a number',
+  },
+};
 
-const checkQuantity = async (req, res, next) => {
+const checkQuantityType = async (req, res, next) => {
   const { quantity } = req.body;
-  if (quantity < 1 || typeof quantity !== 'number') {
-    return res.status(ERROR_STATUS).json(ERROR_MESSAGE);
+  if (typeof quantity !== 'number') {
+    return res.status(ERROR_STATUS).json(ERROR_MESSAGE_TYPE);
   }
 
   next();
 };
 
-module.exports = checkQuantity;
+const checkQuantityLength = async (req, res, next) => {
+  const { quantity } = req.body;
+  if (quantity < 1) {
+    return res.status(ERROR_STATUS).json(ERROR_MESSAGE_LENGTH);
+  }
+
+  next();
+};
+
+module.exports = {
+  checkQuantityType,
+  checkQuantityLength,
+};
