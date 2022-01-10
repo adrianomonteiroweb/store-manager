@@ -10,9 +10,11 @@ app.get('/', (_request, response) => {
 });
 
 // routers
-const { products } = require('./routers');
+const { products, sales } = require('./routers');
 
-// cadastrar produto
+// produtos
 app.use('/products', products);
+// sales
+app.use('/sales', sales);
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
