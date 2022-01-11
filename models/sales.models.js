@@ -37,9 +37,24 @@ const getSales = async () => {
 const getById = async (id) => {
   try {
     const db = await connect();
-    const sale = await db.collection('products').findOne({ _id: ObjectId(id) });
-    // console.log(typeof sale);
+    const sale = await db.collection('sales').findOne({ _id: ObjectId(id) });
+
     return sale || null;
+  } catch (err) {
+    return err.message;
+  }
+};
+
+const setById = async (id, sale) => {
+  try {
+    const db = await connect();
+    const set = await db.collection('sales')
+    .updateOne(
+      { _id: ObjectId(id) },
+      { $set: { itensSold: sale } },
+      );
+    // console.log(set);
+    return set || null;
   } catch (err) {
     return err.message;
   }
@@ -49,4 +64,5 @@ module.exports = {
   create,
   getSales,
   getById,
+  setById,
 };

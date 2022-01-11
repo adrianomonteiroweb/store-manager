@@ -1,6 +1,12 @@
 const router = require('express').Router();
 
-const { insertSales, getAll, getById } = require('../controllers/sales.controllers');
+const {
+  insertSales,
+  getAll,
+  getById,
+  updateSale,
+} = require('../controllers/sales.controllers');
+
 const { checkQuantityType, checkQuantityLength } = require('../middlewares/checkQuantity-sales');
 const checkSaleById = require('../middlewares/checkSaleNoExists');
 
@@ -20,6 +26,13 @@ router.get(
   '/:id',
   checkSaleById,
   getById,
+);
+
+router.put(
+  '/:id',
+  checkQuantityLength,
+  checkQuantityType,
+  updateSale,
 );
 
 module.exports = router;
