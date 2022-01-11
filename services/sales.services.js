@@ -1,4 +1,4 @@
-const { create } = require('../models/sales.models');
+const { create, getSales, getById } = require('../models/sales.models');
 
 const createdSale = async (body) => {
   const insert = body.length < 2 
@@ -8,6 +8,22 @@ const createdSale = async (body) => {
   return insert || null;
 };
 
+const getAllSales = async () => {
+  const sales = await getSales();
+  // console.log(sales);
+  return {
+    sales,
+  } || null;
+};
+
+const getSaleById = async (id) => {
+  const get = await getById(id);
+
+  return get || null;
+};
+
 module.exports = {
   createdSale,
+  getAllSales,
+  getSaleById,
 };

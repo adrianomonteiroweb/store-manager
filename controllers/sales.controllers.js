@@ -1,14 +1,14 @@
 const status = require('http-status-codes').StatusCodes;
 
-const { createdSale } = require('../services/sales.services');
+const { createdSale, getAllSales, getSaleById } = require('../services/sales.services');
 
-const NOT_FOUND_ERROR = { message: 'NOT FOUND' };
-// const ERROR_FORMAT = {
-//   err: {
-//     code: 'invalid_data',
-//     message: 'Wrong id format',
-//   },
-// };
+const NOT_FOUND_ERROR = { message: 'net_found' };
+const ERROR_FORMAT = {
+  err: {
+    code: 'invalid_data',
+    message: 'Wrong id format',
+  },
+};
 
 const insertSales = async (req, res) => {
   let sale;
@@ -23,6 +23,34 @@ const insertSales = async (req, res) => {
   : res.status(status.NOT_FOUND).json(NOT_FOUND_ERROR);
 };
 
+const getAll = async (_req, res) => {
+  let sales;
+  try {
+    sales = await getAllSales();
+    // console.log(sales);
+  } catch (error) {
+    return res.status(status.UNPROCESSABLE_ENTITY).json(ERROR_FORMAT);
+  }
+  return sales
+    ? res.status(status.OK).json(sales)
+    : res.status(status.UNPROCESSABLE_ENTITY).json(NOT_FOUND_ERROR);
+};
+
+const getById = async (req, res) => {
+  const { id } = req.params;
+  let sale;
+  try {
+    sale = await getSaleById(id);
+  } catch (error) {
+    return res.status(status.UNPROCESSABLE_ENTITY).json(ERROR_FORMAT);
+  }
+  return sale
+  ? res.status(status.OK).json(sale)
+  : res.status(status.UNPROCESSABLE_ENTITY).json(NOT_FOUND_ERROR);
+};
+
 module.exports = {
   insertSales,
+  getAll,
+  getById,
 };
