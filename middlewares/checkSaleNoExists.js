@@ -2,10 +2,17 @@ const { ObjectID } = require('mongodb');
 const { getById } = require('../models/sales.models');
 
 const STATUS_ERROR = 404;
+const STATUS_FORMAT_ERROR = 422;
 const ERROR_NO_EXISTS = {
   err: {
     code: 'not_found',
     message: 'Sale not found',
+  },
+};
+const ERROR_ID = {
+  err: {
+    code: 'invalid_data',
+    message: 'Wrong sale ID format',
   },
 };
 
@@ -20,4 +27,13 @@ const checkSaleById = async (req, res, next) => {
   next();
 };
 
-module.exports = checkSaleById;
+const checkIdFormat = async (req, res, next) => {
+  const { id } = req.params;
+  const saleExist = await getById(id);
+  
+  if (typeof saleExist !== 'object') return res.status(STATUS_FORMAT_ERROR).json(ERROR_ID);
+
+  next();
+};
+
+module.exports = { checkSaleById, checkIdFormat };

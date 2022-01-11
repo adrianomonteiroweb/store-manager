@@ -5,6 +5,7 @@ const {
   getAllSales,
   getSaleById,
   setSaleById,
+  deleteSaleById,
 } = require('../services/sales.services');
 
 const NOT_FOUND_ERROR = { message: 'net_found' };
@@ -69,9 +70,24 @@ const updateSale = async (req, res) => {
   : res.status(status.UNPROCESSABLE_ENTITY).json(NOT_FOUND_ERROR);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+  let sale;
+  try {
+    sale = await deleteSaleById(id);
+  } catch (error) {
+    return res.status(status.UNPROCESSABLE_ENTITY).json(ERROR_FORMAT);
+  }
+
+  return sale
+  ? res.status(status.OK).json(sale[0])
+  : res.status(status.UNPROCESSABLE_ENTITY).json(NOT_FOUND_ERROR);
+};
+
 module.exports = {
   insertSales,
   getAll,
   getById,
   updateSale,
+  deleteSale,
 };

@@ -60,9 +60,27 @@ const setById = async (id, sale) => {
   }
 };
 
+const deleteById = async (id) => {
+  try {
+    const db = await connect();
+
+    // const set = await getById(id);
+
+    const set = await db.collection('sales')
+    .deleteOne(
+      { _id: ObjectId(id) },
+      );
+
+    return set || null;
+  } catch (err) {
+    return err.message;
+  }
+};
+
 module.exports = {
   create,
   getSales,
   getById,
   setById,
+  deleteById,
 };

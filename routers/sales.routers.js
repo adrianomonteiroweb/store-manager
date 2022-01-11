@@ -5,10 +5,11 @@ const {
   getAll,
   getById,
   updateSale,
+  deleteSale,
 } = require('../controllers/sales.controllers');
 
 const { checkQuantityType, checkQuantityLength } = require('../middlewares/checkQuantity-sales');
-const checkSaleById = require('../middlewares/checkSaleNoExists');
+const { checkSaleById, checkIdFormat } = require('../middlewares/checkSaleNoExists');
 
 router.post(
   '/',
@@ -33,6 +34,12 @@ router.put(
   checkQuantityLength,
   checkQuantityType,
   updateSale,
+);
+
+router.delete(
+  '/:id',
+  checkIdFormat,
+  deleteSale,
 );
 
 module.exports = router;
